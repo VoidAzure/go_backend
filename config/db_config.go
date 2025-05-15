@@ -47,22 +47,12 @@ func ConnectDB(config DatabaseConfig) (*gorm.DB, error) {
 	return db, nil
 }
 
-func ConnectAndCheckDB(config DatabaseConfig) {
+func ConnectAndCheckDB(config DatabaseConfig) *gorm.DB {
 	db, err := ConnectDB(config)
 	if err != nil {
 		panic("Failed to connect database: " + err.Error())
 	}
-	defer func() {
-		sqlDB, err := db.DB()
-		if err != nil {
-			fmt.Println("Error getting sql.DB object for closing:", err)
-			return
-		}
-		err = sqlDB.Close()
-		if err != nil {
-			fmt.Println("Error closing database connection:", err)
-		}
-	}()
 	// 可以在这里添加连接成功后的其他逻辑
 	fmt.Println("Database connection successful")
+	return db
 }

@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	id          uint `gorm:"primaryKey"`
-	username    string
-	password    string
-	create_time time.Time
-	update_time time.Time
+	ID          uint `gorm:"primaryKey"`
+	Username    string
+	Password    string
+	Create_time time.Time
+	Update_time time.Time
 }
 
 func GetAllUser(db *gorm.DB) ([]User, error) {

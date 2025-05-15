@@ -1,6 +1,8 @@
 package main
 
-import "go_backend/config"
+import (
+	"go_backend/config"
+)
 
 func main() {
 	config.AppStart()

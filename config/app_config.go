@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,10 +35,24 @@ func InitAppConfig() ApplicationConfig {
 func AppStart() {
 	appConfig := InitAppConfig()
 
-	ConnectAndCheckDB(appConfig.Database)
+	db := ConnectAndCheckDB(appConfig.Database)
+
+	defer func() {
+		sqlDB, err := db.DB()
+		if err != nil {
+			fmt.Println("Error getting sql.DB object for closing:", err)
+			return
+		}
+		err = sqlDB.Close()
+		if err != nil {
+			fmt.Println("Error closing database connection:", err)
+		}
+	}()
 
 	// Start the server here
 	r := gin.Default()
+
+	RegisterRoutes(r, db)
 
 	r.Run(":" + appConfig.ServerPort)
 
